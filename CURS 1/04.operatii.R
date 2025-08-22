@@ -1,16 +1,15 @@
-
 a <- 10
 b <- 5
 
-print(a + b)  # Adunare
-print(a - b)  # Scadere
-print(a * b)  # Inmultire
-print(a / b)  # Impartire
+print(a + b) # Adunare
+print(a - b) # Scadere
+print(a * b) # Inmultire
+print(a / b) # Impartire
 print(a %% b) # Restul impartirii
-print(a ^ b)  # Putere
+print(a^b) # Putere
 print(a %/% b) # Impartire intreaga
-print(a > b)  # Comparatie mai mare
-print(a < b)  # Comparatie mai mic
+print(a > b) # Comparatie mai mare
+print(a < b) # Comparatie mai mic
 print(a == b) # Comparatie egalitate
 print(a != b) # Comparatie diferit
 print(a >= b) # Comparatie mai mare sau egal
@@ -20,7 +19,7 @@ print(paste("Rezultatul scaderii este:", a - b))
 print(paste("Rezultatul inmultirii este:", a * b))
 print(paste("Rezultatul impartirii este:", a / b))
 print(paste("Restul impartirii este:", a %% b))
-print(paste("Puterea este:", a ^ b))
+print(paste("Puterea este:", a^b))
 print(paste("Impartirea intreaga este:", a %/% b))
 print(paste("Comparatia mai mare este:", a > b))
 print(paste("Comparatia mai mic este:", a < b))

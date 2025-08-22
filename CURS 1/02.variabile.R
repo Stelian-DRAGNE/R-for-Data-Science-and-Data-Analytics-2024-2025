@@ -1,4 +1,3 @@
-
 # Asignare a unei variabile
 a <- 3
 print(a)
