@@ -6,8 +6,6 @@
 ## 5. Creare perechi view+template  
 """
 
-
-
 import os
 import subprocess
 import time
@@ -35,7 +33,6 @@ def create_project(project_name="test_project", *applications, should_create_def
         make_migrations(project_name)
         create_superuser(project_name)
 
-
 def delete_project(project_name="test_project"):
     shutil.rmtree(project_name)
 
@@ -43,34 +40,30 @@ def delete_project(project_name="test_project"):
 def project_path(project_name="test_project"):
     return os.path.join(os.getcwd(), project_name)
 
-
 def inner_project_path(project_name="test_project"):
     return os.path.join(os.getcwd(), project_name, project_name)
 
-
 def app_path(app_name="test_app", project_name="test_project"):
     return os.path.join(os.getcwd(), project_name, app_name)
-
 
 def create_application(app_name="test_app", project_name="test_project"):
     # Schimbăm directorul de lucru la proiect înainte de a crea aplicația
     cwd = os.getcwd()
     proj_path = project_path(project_name)
     os.chdir(proj_path)
-
+    
     CREATE_APP_CMD = f"{python_command} manage.py startapp {app_name}"
     subprocess.call(CREATE_APP_CMD, shell=True)
     time.sleep(0.5)
-
+    
     # Apelăm setup dar rămânem în directorul proiectului
     setup_application(app_name, project_name)
-
+    
     # Revertim directorul de lucru
     os.chdir(cwd)
 
-
 def make_migrations(project_name="test_project"):
-    # Schimbăm directorul de lucru la proiect înainte de a crea aplicația
+     # Schimbăm directorul de lucru la proiect înainte de a crea aplicația
     cwd = os.getcwd()
     proj_path = project_path(project_name)
     os.chdir(proj_path)
@@ -85,9 +78,8 @@ def make_migrations(project_name="test_project"):
     # Revertim directorul de lucru
     os.chdir(cwd)
 
-
 def create_superuser(project_name="test_project", username="admin", email="email@email.com"):
-    # Schimbăm directorul de lucru la proiect înainte de a crea aplicația
+       # Schimbăm directorul de lucru la proiect înainte de a crea aplicația
     cwd = os.getcwd()
     proj_path = project_path(project_name)
     os.chdir(proj_path)
@@ -100,14 +92,12 @@ def create_superuser(project_name="test_project", username="admin", email="email
     # Revertim directorul de lucru
     os.chdir(cwd)
 
-
 def setup_application(app_name="test_app", project_name="test_project"):
     # Funcțiile de setup sunt apelate din directorul proiectului (din create_application)
     _add_app_to_installed_apps(app_name, project_name)
     _create_templates_folder(app_name, project_name)
     _create_app_url_file(app_name, project_name)
     _link_app_in_project_url_file(app_name, project_name)
-
 
 def _add_app_to_installed_apps(app_name="test_app", project_name="test_project"):
     # Calea către settings.py este în folderul intern al proiectului
@@ -124,29 +114,27 @@ def _add_app_to_installed_apps(app_name="test_app", project_name="test_project")
             # print("inserted")
             settings_content.insert(index, f"\t'{app_name}',\n")
             break
-
+    
     with open(settings_path, "w") as fwriter:
         fwriter.writelines(settings_content)
-
 
 def _create_templates_folder(app_name="test_app", project_name="test_project"):
     # Creăm folderul templates în directorul aplicației
     app_templates_path = os.path.join(app_name, "templates", app_name)
     os.makedirs(app_templates_path, exist_ok=True)
 
-
 def _create_app_url_file(app_name="test_app", project_name="test_project"):
     # Creăm urls.py în directorul aplicației
     app_urls_path = os.path.join(app_name, "urls.py")
     URLS_CONTENT = """from django.urls import path\n\nurlpatterns = [\n\n]\n"""
-
+    
     with open(app_urls_path, "w") as fwriter:
         fwriter.write(URLS_CONTENT)
 
 def _link_app_in_project_url_file(app_name="test_app", project_name="test_project"):
     # Calea către urls.py din folderul intern al proiectului
     project_urls_path = os.path.join(project_name, "urls.py")
-
+    
     with open(project_urls_path, "r") as freader:
         urls_lines = freader.readlines()
 
@@ -181,7 +169,7 @@ def create_url(path_name, view_name, app_name):
         elif has_encounter_urlpatterns and "]" in line:
             existing_url_file.insert(index, new_line)
             break
-
+    
     with open(os.path.join(app_name, 'urls.py'), 'w') as file:
         file.writelines(existing_url_file )
 
@@ -190,10 +178,9 @@ def create_view(view_name, template_name, app_name):
     view_text = f"""def {view_name}(request):\n\tcontext = {"{}"}\n\treturn render(request, '{template_name}.html', context)\n"""
     with open(os.path.join(app_name, 'views.py'), 'r') as filereader:
         existing_views = filereader.read()
-
+    
     with open(os.path.join(app_name, 'views.py'), 'w') as file:
         file.write(existing_views + "\n" + view_text)
-
 
 def create_template(template_name, app_name):
     template_emmet = f"""<!DOCTYPE html>
@@ -209,7 +196,6 @@ def create_template(template_name, app_name):
 </html>"""
     with open(os.path.join(app_name, 'templates', f'{template_name}.html'), 'w') as file:
         file.write(template_emmet)
-
 
 def create_view_url_and_template(view_name, url_path_name, template_name, app_name, project_name):
     # Schimbăm directorul de lucru la proiect înainte de a crea aplicația
@@ -253,12 +239,13 @@ PROJECT_NAME:
 def main_config_file(config_path="django_config.yaml"):
     """
     Creează un proiect Django și aplicațiile sale conform configurației din fișierul YAML.
-
+    
     Formatul fișierului YAML ar trebui să fie:
     # Schimba PROJECT_NAME cu numele proiectului
     PROJECT_NAME:  
             # Schimba APP_NAME1 cu numele aplicatiei
             APP_NAME1:
+
                 - view_name: NUME_VIEW
                 url_path_name: NUME_URL
                 template_name: NUME_TEMPLATE
@@ -274,24 +261,23 @@ def main_config_file(config_path="django_config.yaml"):
 
             # Mai adauga aplicatii si view-uri in acest fel
     """
-
     try:
         with open(config_path, 'r') as file:
             config = yaml.safe_load(file)
-
+            
         if not config:
             raise ValueError("Fișierul de configurare este gol")
-
+            
         # Obținem numele proiectului (primul și singurul key din config)
         project_name = list(config.keys())[0]
         project_config = config[project_name]
-
+        
         # Verificăm dacă proiectul există
         should_create_new_project = not os.path.exists(project_name)
-
+        
         # Extragem toate aplicațiile
         applications = list(project_config.keys())
-
+        
         # Creăm proiectul dacă nu există
         if should_create_new_project:
             create_project(project_name, *applications)
@@ -303,7 +289,7 @@ def main_config_file(config_path="django_config.yaml"):
                     create_application(app, project_name)
                 else:
                     print(f"Aplicatia {app} exista deja, nu se creeaza")
-
+        
         # Creăm view-urile, URL-urile și template-urile pentru fiecare aplicație
         # Verificăm dacă toate view-urile există în fiecare aplicație
         for app_name, views in project_config.items():
@@ -311,11 +297,11 @@ def main_config_file(config_path="django_config.yaml"):
                 view_name = view_config.get('view_name')
                 url_path_name = view_config.get('url_path_name')
                 template_name = view_config.get('template_name')
-
+                
                 templates_not_exists = not os.path.exists(os.path.join(os.getcwd(), project_name, app_name, 'templates', f'{template_name}.html'))
                 with open(os.path.join(os.getcwd(), project_name, app_name,'views.py'), 'r') as file:
                     views_not_exists = view_name not in file.read()
-
+                
                 with open(os.path.join(os.getcwd(), project_name, app_name, 'urls.py'), 'r') as file:
                     url_not_exists = url_path_name not in file.read()
 
@@ -329,9 +315,9 @@ def main_config_file(config_path="django_config.yaml"):
                         )
                 else:
                     print(f"Configurație incompletă pentru view în aplicația {app_name} \n\t{view_name} \n\t{url_path_name} \n\t{template_name}")
-
+        
         print("Execuție realizată cu succes!")
-
+        
     except FileNotFoundError:
         print(f"Fișierul de configurare {config_path} nu a fost găsit")
     except yaml.YAMLError as e:
@@ -377,6 +363,7 @@ def main_interactive():
 
 
 
+
 if __name__ == "__main__":
     # verifica daca exista django_config.yaml
     ## TODO: get path of current file - DONE - to be tested
@@ -389,3 +376,5 @@ if __name__ == "__main__":
         print("Modificati configuratia in django_config.yaml si apoi rulati programul din nou")
     else:
         main_config_file()
+
+    
