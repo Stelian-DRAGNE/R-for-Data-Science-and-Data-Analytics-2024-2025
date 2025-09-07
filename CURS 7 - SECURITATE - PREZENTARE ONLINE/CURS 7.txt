@@ -1,0 +1,6 @@
+"""
+
+Acest curs a fost sustinut exclusiv online
+
+
+"""
